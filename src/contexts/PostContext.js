@@ -9,14 +9,6 @@ export default class PostContextProvider extends Component {
     renderPost: false,
   };
 
-  // addPost = (newPost) => {
-  //     const newPostArr = this.state.post
-  //     newPostArr.push(newPost);
-  //     this.setState({
-  //         post: newPostArr
-  //     })
-  // }
-
   render() {
     // DB.collection("Posts")
     //   .get()
@@ -33,14 +25,17 @@ export default class PostContextProvider extends Component {
     //     });
     //   });
 
-    DB.collection("Posts").onSnapshot((snapshot) => {
-      let changes = snapshot.docChanges();
-      let arr = [];
-      changes.forEach((change) => {
-        arr.push({ post: change.doc.data().post, index: change.newIndex });
+    DB.collection("Posts")
+      .orderBy("createdAt", "desc")
+      .limit(20)
+      .onSnapshot((snapshot) => {
+        let changes = snapshot.docChanges();
+        let arr = [];
+        changes.forEach((change) => {
+          arr.push({ post: change.doc.data().post, index: change.newIndex });
+        });
+        this.setState({ post: arr, renderPost: true });
       });
-      this.setState({ post: arr, renderPost: true });
-    });
 
     return (
       <PostContext.Provider value={{ ...this.state, addPost: this.addPost }}>

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { PostContext } from "../contexts/PostContext";
 import DB from "../firebase/Fire";
+import firebase from "firebase";
 
 export default class Add extends Component {
   constructor(props) {
@@ -13,8 +14,10 @@ export default class Add extends Component {
   render() {
     const submitHandler = (e) => {
       e.preventDefault();
+      const timestamp = firebase.firestore.Timestamp.now();
       DB.collection("Posts").add({
         post: this.state.content,
+        createdAt: timestamp,
       });
     };
 
