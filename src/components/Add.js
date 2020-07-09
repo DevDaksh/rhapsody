@@ -16,7 +16,6 @@ export default class Add extends Component {
       DB.collection("Posts").add({
         post: this.state.content,
       });
-      setTimeout(() => window.location.reload(), 5000);
     };
 
     return (
