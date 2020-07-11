@@ -15,10 +15,16 @@ export default class Add extends Component {
     const submitHandler = (e) => {
       e.preventDefault();
       const timestamp = firebase.firestore.Timestamp.now();
-      DB.collection("Posts").add({
-        post: this.state.content,
-        createdAt: timestamp,
-      });
+      if (this.state.content === "") {
+        alert("Please enter a valid post body");
+      } else {
+        DB.collection("Posts").add({
+          post: this.state.content,
+          createdAt: timestamp,
+        });
+      }
+      const input = document.querySelector("#input");
+      input.value = "";
     };
 
     return (
